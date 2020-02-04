@@ -413,7 +413,7 @@ a {
 .search {
     position: fixed;
     right: 4vw;
-    top: .6rem;
+    margin-top: 10px;
 }
 
 .search input {
