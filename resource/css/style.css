@@ -426,5 +426,14 @@ a {
 
 .fold {
     height: 0px;
-    transform: translateY(-100vh);
+    transform: translateY(-1000vh);
+}
+
+@media only all and (max-width: 430px) {
+    .aui-center {
+        margin-left: 10px!important;
+    }
+    .aui-app-flex-box {
+        width: 100%;
+    }
 }
