@@ -119,7 +119,7 @@
 
             },
             install(name, source) {
-                layer.alert(`<textarea id="code" style="width: 100%;height: 80%;resize: none;border: none;overflow: hidden;cursor: default;" readonly>scoop bucket add ${source.replace('/', '_')} ${source}
+                layer.alert(`<textarea id="code" style="width: 100%;height: 80%;resize: none;border: none;overflow: hidden;cursor: default;" readonly>scoop bucket add ${source.replace('/', '_')} https://github.com/${source}
 scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].length - 2)}
 </textarea>`, {
                     title: false,
