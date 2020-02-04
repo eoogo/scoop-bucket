@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+    <link rel="icon" href="https://avatars0.githubusercontent.com/u/43713756">
+    <title>Scoop Apps</title>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+    <!--<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>-->
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+
+    <link rel="stylesheet" href="resource/css/style.css">
+    <script src="resource/js/helper.js"></script>
+</head>
+<body>
+
+<section id="container" class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed">
+        <div class="aui-center" style="margin-left: 3rem;">
+            <span class="aui-center-title">Eoogo</span>
+        </div>
+        <div class="search">
+            <input id="search" type="text" @keydown.enter="search()" autofocus placeholder="Search..."/>
+            <button @click="search()">Search</button>
+        </div>
+        <!--<div class="control">
+            <button @click="jump_source(-1)">Prev</button>
+            <button @click="jump_source(1)">Next</button>
+        </div>-->
+    </header>
+    <section class="aui-scrollView">
+        <div v-for="(app, name) of apps" :key="name">
+            <div class="cc-title">
+                <span>{{ name }}</span>
+                <!--<div class="control">
+                    <button @click="jump_page(-1, name)">Prev</button>
+                    <button @click="jump_page(1, name)">Next</button>
+                </div>-->
+            </div>
+            <div class="aui-app-box" style="display: flex;justify-content: start;flex-wrap: wrap;">
+                <div v-for="(info,k) in app" v-if="!!info" :key="k" class="aui-app-flex-box box-line">
+                    <div class="aui-app-flex ">
+                        <div class="aui-app-flex-bd">
+                            <h2>
+                                <a :href="info[0].match(/\(.*?\)/)[0].substr(1, info[0].match(/\(.*?\)/)[0].length - 2)" target="_blank"
+                                   :title="info[0].match(/\[.*?\]/)[0].substr(1, info[0].match(/\[.*?\]/)[0].length - 2)">
+                                    {{ info[0].match(/\[.*?\]/)[0].substr(1, info[0].match(/\[.*?\]/)[0].length - 2) }}
+                                </a>
+                                <!--<em>最新</em>-->
+                            </h2>
+                            <p>
+                                <span>
+                                    <a :href="(link = (info[1].match(/\(.*?\)/) + '').substr(1, (info[1].match(/\(.*?\)/) + '').length - 2)) == 'ul'?'javascript:;':link">
+                                        {{ (info[1].match(/(\[.*?\]|\*.*?\*)/) + '').substr(1, (info[1].match(/(\[.*?\]|\*.*?\*)/) + '').indexOf(',') - 2) || 'No version' }}
+                                    </a>
+                                    &nbsp;
+                                </span>
+                                <span :title="info[3] || ''">{{ info[3] || '' }}</span>
+                            </p>
+                        </div>
+                        <div class="aui-app-flex-fr" style="cursor: pointer;" @click="install(info[0], name)">Install
+                        </div>
+                    </div>
+                    <div class="aui-app-flex-text">
+                        <a :href="info[0].match(/\(.*?\)/)[0].substr(1, info[0].match(/\(.*?\)/)[0].length - 2)">
+                            <p>{{ info[2] || 'No description.' }}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+</body>
+<script>
+    new Vue({
+        el: "#container",
+        data: {
+            apps: {}
+        },
+        methods: {
+            search() {
+                let keyword = $('#search').val();
+                $('#search').val('');
+                let result = {};
+                for (name of Object.keys(this.apps)) {
+                    Vue.delete(this.apps, name);
+                }
+                for (source of Object.keys(window.app_list)) {
+                    window.app_list[source].forEach(function (v, k) {
+                        if (v[0].indexOf(keyword) != -1) {
+                            if (!result[source]) result[source] = [];
+                            result[source][k] = window.app_list[source][k];
+                        }
+                    });
+                }
+                // console.log(result);
+                this.apps = result;
+            },
+            jump_page(page, source) {
+                console.log(source);
+            },
+            jump_source(page) {
+
+            },
+            install(name, source) {
+                layer.alert(`<textarea id="code" style="width: 100%;height: 80%;resize: none;border: none;overflow: hidden;cursor: default;" readonly>scoop bucket add ${source.replace('/', '_')} ${source}
+scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].length - 2)}
+</textarea>`, {
+                    title: false,
+                    closeBtn: false,
+                    btn: ['Copy', 'Cancel'],
+                    area: ['35vw', '25vh'],
+                    yes() {
+                        $('#code').select();
+                        document.execCommand('copy');
+                        layer.closeAll();
+                        layer.msg('Please paste and execute on the command line');
+                    },
+                    success() {
+                        $('#code').select();
+                    },
+                    shadeClose: true
+                });
+            }
+        },
+        created() {
+            getAppList().then(res => {
+                window.app_list = JSON.parse(JSON.stringify(res));
+                let resources = Object.keys(res);
+                let page = resources.splice(Math.floor(Math.random() * resources.length - 1), 2);
+
+                resources.forEach(function (v) {
+                    delete res[v];
+                });
+                this.apps = res;
+            }).catch(e => {
+                layer.msg('暂时无法使用：' + e.message);
+            });
+        }
+    });
+
+    $(document).on('click', '.cc-title', function () {
+        $(this).next('.aui-app-box').toggleClass('fold');
+    });
+</script>
+
+<!-- 翻译开始 -->
+<div id='google_translate_element' style='position: fixed; bottom: 0px; right: 0px;z-index: 100'></div>
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                // pageLanguage: 'zh-CN',
+                // 需要翻译的语言，比如你只需要翻译成越南和英语，这里就只写en,vi
+                includedLanguages: 'en,zh-CN,hr,cs,da,nl,fr,de,el,iw,hu,ga,it,ja,ko,pt,ro,ru,sr,es,th,vi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                // 自动显示翻译横幅，就是翻译后顶部出现的那个
+                autoDisplay: true,
+                // 还有些其他参数，由于原插件不再维护，找不到详细api了，将就了，实在不行直接上dom操作
+            },
+            'google_translate_element' // 存放翻译组件元素的id
+        );
+    }
+</script>
+<script src="https://translate.google.cn/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!-- 翻译结束 -->
+</html>
