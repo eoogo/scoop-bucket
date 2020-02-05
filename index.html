@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="aui-app-flex-text">
-                        <a :href="info[0].match(/\(.*?\)/)[0].substr(1, info[0].match(/\(.*?\)/)[0].length - 2)">
+                        <a :href="info[0].match(/\(.*?\)/)[0].substr(1, info[0].match(/\(.*?\)/)[0].length - 2)" target="_blank">
                             <p>{{ info[2] || 'No description.' }}</p>
                         </a>
                     </div>
@@ -130,7 +130,7 @@
                     });
                 }
                 // console.log(result);
-                layer.msg('Search results for ' + keyword);
+                layer.msg('Search results for <b>' + keyword + '</b>');
                 this.apps = result;
             },
             jump_page(page, source) {
