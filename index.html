@@ -39,6 +39,7 @@
                 <li><a href="https://github.com/eoogo/scoop-bucket/blob/master/README.md" target="_blank">Install scoop</a></li>
                 <li><a href="https://scoop.sh" target="_blank">Official support</a></li>
                 <li style="cursor: default">-----------------</li>
+                <li style="cursor: pointer;" onclick="localStorage.clear();layer.msg('Clean up！(●\'◡\'●)');">Clear cache</li>
                 <li><a href="https://github.com/eoogo" target="_blank">About</a></li>
                 <li><a href="mailto:1434389213@qq.com?subject=From%20scoop%20apps%20-%20">Contact me</a></li>
             </ul>
@@ -109,6 +110,11 @@
         },
         methods: {
             search() {
+                if (!window.app_list) {
+                    layer.msg('No data can be retrieved');
+                    $('.aui-title-coll').css('transform', 'unset');
+                    return false;
+                }
                 let keyword = $('#search').val();
                 $('#search').val('');
                 let result = {};
@@ -124,6 +130,7 @@
                     });
                 }
                 // console.log(result);
+                layer.msg('Search results for ' + keyword);
                 this.apps = result;
             },
             jump_page(page, source) {
@@ -165,7 +172,17 @@ scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].leng
                 });
                 this.apps = res;
             }).catch(e => {
-                layer.msg('暂时无法使用：' + e.message);
+                layer.alert('Something went wrong, please tell me via email? <br> You can also send me feedback in the upper left corner', {
+                    title: false,
+                    closeBtn: false,
+                    btn: ['Yes', 'No'],
+                    end() {
+                        layer.msg('You can check some support in the upper left corner');
+                    }
+                }, function () {
+                    layer.closeAll();
+                    window.open('mailto:1434389213@qq.com?subject=From%20scoop%20apps%20-%20&body=' + encodeURIComponent( 'I am using Scoop Apps, I have a problem, please help me. \n\n' + e + '\n\n'));
+                });
             });
         }
     });

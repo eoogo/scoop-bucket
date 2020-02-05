@@ -6,6 +6,8 @@ html, body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: normal;
+    overflow-x: hidden;
+    -ms-overflow-x: hidden;
 }
 
 * {
