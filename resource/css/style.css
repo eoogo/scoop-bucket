@@ -413,7 +413,7 @@ a {
 
 .fold {
     height: 0px;
-    transform: translateY(-1000vh);
+    transform: translateX(-1000vw);
 }
 
 @media only all and (max-width: 600px) {
