@@ -14,6 +14,7 @@
     <!--<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>-->
 
     <link rel="stylesheet" href="resource/css/style.css">
+    <link rel="stylesheet" href="resource/css/bg_style.css">
     <script src="resource/js/helper.js"></script>
 
     <script>
@@ -27,6 +28,7 @@
     </script>
 </head>
 <body>
+<canvas id="c"></canvas>
 
 <section id="container" class="aui-flexView">
     <header class="aui-navBar aui-navBar-fixed">
@@ -51,7 +53,7 @@
                     <button @click="jump_page(1, name)">Next</button>
                 </div>-->
             </div>
-            <div class="aui-app-box" style="display: flex;justify-content: start;flex-wrap: wrap;">
+            <div class="aui-app-box" style="display: flex;justify-content: space-around;flex-wrap: wrap;">
                 <div v-for="(info,k) in app" v-if="!!info" :key="k" class="aui-app-flex-box box-line">
                     <div class="aui-app-flex ">
                         <div class="aui-app-flex-bd">
@@ -65,11 +67,15 @@
                             <p>
                                 <span>
                                     <a :href="(link = (info[1].match(/\(.*?\)/) + '').substr(1, (info[1].match(/\(.*?\)/) + '').length - 2)) == 'ul'?'javascript:;':link">
-                                        {{ (info[1].match(/(\[.*?\]|\*.*?\*)/) + '').substr(1, (info[1].match(/(\[.*?\]|\*.*?\*)/) + '').indexOf(',') - 2) || 'No version' }}
+                                        {{ (info[1].match(/(\[.*?\]|\*.*?\*)/) + '').substr(1, (info[1].match(/(\[.*?\]|\*.*?\*)/) + '').indexOf(',') - 2) || info[1] || '' }}
                                     </a>
                                     &nbsp;
                                 </span>
-                                <span :title="info[3] || ''">{{ info[3] || '' }}</span>
+                                <span :title="info[3] || ''">
+                                    <a :href="(p = (info[3].match(/\(.*?\)/) + '').substr(1, (info[3].match(/\(.*?\)/) + '').length -2 )) != 'ul'?p:'javascript:;'">
+                                        {{ (p = (info[3].match(/\[.*?\]/) + '').substr(1, (info[3].match(/\[.*?\]/) + '').length - 2)) != 'ul'?p:info[3] || '' }}
+                                    </a>
+                                </span>
                             </p>
                         </div>
                         <div class="aui-app-flex-fr" style="cursor: pointer;" @click="install(info[0], name)">Install
@@ -119,13 +125,14 @@
 
             },
             install(name, source) {
-                layer.alert(`<textarea id="code" style="width: 100%;height: 80%;resize: none;border: none;overflow: hidden;cursor: default;" readonly>scoop bucket add ${source.replace('/', '_')} https://github.com/${source}
+                layer.alert(`<textarea id="code" style="width: 100%;height: 90%;resize: none;border: none;overflow: hidden;overflow-y: auto; cursor: default;" readonly>scoop bucket add ${source.replace('/', '_')} https://github.com/${source}
+
 scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].length - 2)}
 </textarea>`, {
                     title: false,
                     closeBtn: false,
                     btn: ['Copy', 'Cancel'],
-                    area: ['35vw', '25vh'],
+                    area: ['35vw', '30vh'],
                     yes() {
                         $('#code').select();
                         document.execCommand('copy');
@@ -159,6 +166,11 @@ scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].leng
         $(this).next('.aui-app-box').toggleClass('fold');
     });
 </script>
+
+<!-- 背景开始 -->
+<script src="resource/js/dat.gui.min.js"></script>
+<script src="resource/js/bg_index.js"></script>
+<!-- 背景结束 -->
 
 <!-- 翻译开始 -->
 <div id='google_translate_element' style='position: fixed; bottom: 0px; right: 0px;z-index: 100'></div>

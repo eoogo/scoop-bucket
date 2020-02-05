@@ -16,6 +16,12 @@ scoop install aria2
 scoop bucket add extras
 ```
 
-# [Scoop](https://scoop.sh/) buckets
+## [Scoop](https://scoop.sh/) buckets
 View the Scoop Directory by:  
-[GitHub score](by-score.md) | [bucket name](by-bucket.md) | [apps](by-apps.md) | [stars](by-stars.md) | [forks](by-forks.md) | [last updated](by-date-updated.md)
+[GitHub score](https://github.com/rasa/scoop-directory/blob/master/by-score.md)
+| [bucket name](https://github.com/rasa/scoop-directory/blob/master/by-bucket.md)
+| [apps](https://github.com/rasa/scoop-directory/blob/master/by-apps.md)
+| [stars](https://github.com/rasa/scoop-directory/blob/master/by-stars.md)
+| [forks](https://github.com/rasa/scoop-directory/blob/master/by-forks.md)
+| [last updated](https://github.com/rasa/scoop-directory/blob/master/by-date-updated.md)
+| **[support](bucket.md)**
