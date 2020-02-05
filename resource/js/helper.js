@@ -9,7 +9,7 @@ async function getAppList(resource = null) {
     let app_list = JSON.parse(localStorage.getItem('app_list'));
     if (!app_list || typeof app_list != 'object' || Object.keys(app_list).length < 1) {
         if (!resource) {
-            resource = await $.get('https://raw.githubusercontent.com/eoogo/scoop-bucket/master/bucket.md')
+            resource = await $.get('https://raw.githubusercontent.com/eoogo/scoop-bucket/master/source_list.md')
                 .then(source_list => source_list.split('\n'))
                 .catch(err => {
                     throw new Error('Software source, Because ' + err.statusText + ':' + err.statusCode);
