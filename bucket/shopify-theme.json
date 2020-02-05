@@ -11,12 +11,22 @@
             "url": "https://shopify-themekit.s3.amazonaws.com/v1.0.2/windows-amd64/theme.exe"
         }
     },
-    "autoupdate": {
+    "checkver": {
         "32bit": {
-            "url": "https://shopify-themekit.s3.amazonaws.com/v1.0.2/windows-386/theme.exe"
+            "url": "https://shopify.github.io/themekit/",
+            "regex": "https\\:\/\/shopify-themekit\\.s3\\.amazonaws\\.com/v(.*?)/windows-386/theme\\.exe"
         },
         "64bit": {
-            "url": "https://shopify-themekit.s3.amazonaws.com/v1.0.2/windows-amd64/theme.exe"
+            "url": "https://shopify.github.io/themekit/",
+            "regex": "https\\:\/\/shopify-themekit\\.s3\\.amazonaws\\.com\/v(.*?)\/windows-amd64\/theme\\.exe"
+        }
+    },
+    "autoupdate": {
+        "32bit": {
+            "url": "https://shopify-themekit.s3.amazonaws.com/v${version}/windows-386/theme.exe"
+        },
+        "64bit": {
+            "url": "https://shopify-themekit.s3.amazonaws.com/v${version}/windows-amd64/theme.exe"
         }
     }
 }
