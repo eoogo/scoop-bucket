@@ -19,7 +19,7 @@
 
     <script>
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?9fc9fbaf6033e662ed8cbda0dba1c029";
             var s = document.getElementsByTagName("script")[0];
@@ -29,11 +29,19 @@
 </head>
 <body>
 <canvas id="c"></canvas>
+<div class="actGotop"><img src="http://www.jq22.com/demo/jquery-top20161222/img/huojian.svg" alt="返回顶部小火箭"></div>
 
 <section id="container" class="aui-flexView">
     <header class="aui-navBar aui-navBar-fixed">
         <div class="aui-center" style="margin-left: 3rem;">
-            <span class="aui-center-title">Eoogo</span>
+            <span class="aui-center-title" style="cursor:pointer;" onclick="location.reload();">Eoogo</span>
+            <ul class="aui-title-coll">
+                <li><a href="https://github.com/eoogo/scoop-bucket/blob/master/README.md" target="_blank">Install scoop</a></li>
+                <li><a href="https://scoop.sh" target="_blank">Official support</a></li>
+                <li style="cursor: default">-----------------</li>
+                <li><a href="https://github.com/eoogo" target="_blank">About</a></li>
+                <li><a href="mailto:1434389213@qq.com?subject=From%20scoop%20apps%20-%20">Contact me</a></li>
+            </ul>
         </div>
         <div class="search">
             <input id="search" type="text" @keydown.enter="search()" autofocus placeholder="Search..."/>
@@ -47,7 +55,7 @@
     <section class="aui-scrollView">
         <div v-for="(app, name) of apps" :key="name">
             <div class="cc-title">
-                <span>{{ name }}</span>
+                <span style="cursor: pointer;" onclick="window.open('https://github.com/' + $(this).text());event.stopPropagation();event.cancelBubble = true;">{{ name }}</span>
                 <!--<div class="control">
                     <button @click="jump_page(-1, name)">Prev</button>
                     <button @click="jump_page(1, name)">Next</button>
@@ -164,6 +172,25 @@ scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].leng
 
     $(document).on('click', '.cc-title', function () {
         $(this).next('.aui-app-box').toggleClass('fold');
+    });
+
+    // 回到顶部
+    $(function () {
+        $('.aui-scrollView').scroll(function () {
+            if ($('.aui-scrollView').scrollTop() >= 100) {
+                $('.actGotop').fadeIn(300);
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function () {
+            $('.aui-scrollView').animate({scrollTop: '0px'}, 500);
+        });
+        $(document).keydown(function (event) {
+            if (event.keyCode == 32) {
+                $('.actGotop').click();
+            }
+        });
     });
 </script>
 

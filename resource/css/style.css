@@ -438,10 +438,81 @@ a {
 }
 
 /* 翻译 */
-.skiptranslate.goog-te-gadget > div{
+.skiptranslate.goog-te-gadget > div {
     background: #fff9;
 }
 
 .skiptranslate.goog-te-gadget img, .skiptranslate.goog-te-gadget span[aria-hidden="true"] {
     display: none;
 }
+
+/* 回到顶部 */
+.actGotop {
+    display: none;
+    position: fixed;
+    bottom: 7%;
+    right: 5%;
+    z-index: 666;
+}
+
+.actGotop img {
+    height: 4rem;
+}
+
+.actGotop:hover {
+    animation: rubberBand 1s;
+}
+
+@keyframes rubberBand {
+    from {
+        transform: scale3d(1, 1, 1);
+    }
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+    }
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+    }
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+    }
+    65% {
+        transform: scale3d(.95, 1.05, 1);
+    }
+    75% {
+        transform: scale3d(1.05, .95, 1);
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+    }
+}
+/* end 顶部 */
+
+/* 导航开始 */
+.aui-title-coll {
+    transform: translate(-20vw, -5vh) rotate(20deg) scale(.3);
+    position: fixed;
+    top: 5%;
+    padding: 5px;
+    background: linear-gradient(0deg, #0288d1, #0288d1ed);
+    color: white;
+    box-shadow: 0px 0px 14px #0288d1;
+    border-radius: 5px;
+    transition: all .3s;
+}
+
+@media only all and (min-width: 600px) {
+    .aui-center:hover .aui-title-coll,.aui-title-coll:hover .aui-title-coll {
+        transform: unset;
+    }
+}
+
+ul.aui-title-coll * {
+    color: white;
+    font-size: 14px;
+}
+
+ul.aui-title-coll > li {
+    margin: 10px;
+}
+/* 导航结束 */
