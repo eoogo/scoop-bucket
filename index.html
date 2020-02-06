@@ -104,8 +104,8 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: 'Ok', sha
         </div>
     </section>
     <section v-else class="aui-scrollView" style="text-align: center;line-height: calc(100vh /2);">
-        <span style="color: white;text-shadow: 0px 0px 8px grey;"></span>
-        <div id="loading">
+        <span style="color: white;text-shadow: 0px 0px 8px grey;">No result, Hit enter to continue</span>
+        <div v-if="$('#search').attr('placeholder') == 'Search...'" id="loading">
             <div id="loading-center">
                 <div id="loading-center-absolute">
                     <div class="object" id="object_four"></div>
