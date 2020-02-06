@@ -13,6 +13,7 @@
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <!--<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>-->
 
+    <link rel="stylesheet" href="resource/css/loading.css">
     <link rel="stylesheet" href="resource/css/style.css">
     <link rel="stylesheet" href="resource/css/bg_style.css">
     <script src="resource/js/helper.js"></script>
@@ -53,7 +54,7 @@
             <button @click="jump_source(1)">Next</button>
         </div>-->
     </header>
-    <section class="aui-scrollView">
+    <section v-if="Object.keys(apps).length" class="aui-scrollView">
         <div v-for="(app, name) of apps" :key="name">
             <div class="cc-title">
                 <span style="cursor: pointer;" onclick="window.open('https://github.com/' + $(this).text());event.stopPropagation();event.cancelBubble = true;">{{ name }}</span>
@@ -99,6 +100,26 @@
             </div>
         </div>
     </section>
+    <section v-else class="aui-scrollView" style="text-align: center;line-height: calc(100vh /2);">
+        <span style="color: white;text-shadow: 0px 0px 8px grey;"></span>
+        <div id="loading">
+            <div id="loading-center">
+                <div id="loading-center-absolute">
+                    <div class="object" id="object_four"></div>
+                    <div class="object" id="object_three"></div>
+                    <div class="object" id="object_two"></div>
+                    <div class="object" id="object_one"></div>
+                </div>
+            </div>
+        </div>
+        <script>
+            let loading_hint = 0;
+            setInterval(function () {
+                if (loading_hint ++ > 5) loading_hint = 1;
+                $('#loading').prev().text('Searching for software sources, please be patient' + '.'.repeat(loading_hint));
+            }, 250);
+        </script>
+    </section>
 </section>
 
 </body>
@@ -116,7 +137,9 @@
                     return false;
                 }
                 let keyword = $('#search').val();
+                if (!keyword) return false;
                 $('#search').val('');
+                $('#search').attr('placeholder', keyword);
                 let result = {};
                 for (name of Object.keys(this.apps)) {
                     Vue.delete(this.apps, name);
@@ -130,7 +153,6 @@
                     });
                 }
                 // console.log(result);
-                layer.msg('Search results for <b>' + keyword + '</b>');
                 this.apps = result;
             },
             jump_page(page, source) {
