@@ -510,11 +510,13 @@ a {
 }
 
 ul.aui-title-coll * {
-    color: white;
+    color: #ffffffd9;
     font-size: 14px;
 }
 
 ul.aui-title-coll > li {
-    margin: 10px;
+    margin: 10px 0px;
+    width: 16vw;
+    text-align: center;
 }
 /* 导航结束 */

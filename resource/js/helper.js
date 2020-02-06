@@ -48,3 +48,20 @@ async function getAppList(resource = null) {
     }
     return app_list;
 }
+
+function randomilize(arr) {
+    var length = arr.length;
+    var arr1 = new Array();
+    for (var i = 0; i < length; i++) {
+        arr1[i] = i;
+    }   //建立数组下标数组
+    var arr2 = new Array();
+    for (var i = 0; i < length; i++) {
+        arr2[i] = arr1.splice(Math.floor(Math.random() * arr1.length), 1);
+    }  //将数组下标随机打乱
+    var arr3 = new Array();
+    for (var i = 0; i < length; i++) {
+        arr3[i] = arr[arr2[i]];
+    }  //将数组按打乱后的下标输出
+    return arr3;
+}

@@ -2,6 +2,7 @@
 # 使用powershell执行( 提示输入请输入 A )
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 iwr -useb scoop.ccheng.live/is.ps1 | iex
+
 ```
 
 ## [Scoop](https://scoop.sh/) buckets

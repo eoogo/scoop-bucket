@@ -30,23 +30,25 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<div class="actGotop"><img src="http://www.jq22.com/demo/jquery-top20161222/img/huojian.svg" alt="返回顶部小火箭"></div>
+<div class="actGotop" style="cursor: pointer;" title="Click me or press the space bar to return to the top"><img src="http://www.jq22.com/demo/jquery-top20161222/img/huojian.svg" alt="Back to top"></div>
 
 <section id="container" class="aui-flexView">
     <header class="aui-navBar aui-navBar-fixed">
         <div class="aui-center" style="margin-left: 3rem;">
             <span class="aui-center-title" style="cursor:pointer;" onclick="location.reload();">Eoogo</span>
             <ul class="aui-title-coll">
-                <li><a href="https://github.com/eoogo/scoop-bucket/blob/master/README.md" target="_blank">Install scoop</a></li>
-                <li><a href="https://scoop.sh" target="_blank">Official support</a></li>
-                <li style="cursor: default">-----------------</li>
-                <li style="cursor: pointer;" onclick="localStorage.clear();layer.msg('Clean up！(●\'◡\'●)');">Clear cache</li>
-                <li><a href="https://github.com/eoogo" target="_blank">About</a></li>
+                <li><a href="javascript:;" onclick="layer.alert(`# Execute using powershell (enter [A] for prompt)<br>
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser<br>
+iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: 'Ok', shadeClose: true, closeBtn: false});">Install scoop</a></li>
+                <li style="cursor: pointer;" onclick="localStorage.clear();layer.msg('Clean up！(●\'◡\'●)', {}, () => location.reload());">Clear cache</li>
+                <li style="cursor: default">&emsp;</li>
+                <li><a href="https://scoop-docs.now.sh" target="_blank">Official support</a></li>
+                <li><a href="https://github.com/eoogo/scoop-bucket" target="_blank">About project</a></li>
                 <li><a href="mailto:1434389213@qq.com?subject=From%20scoop%20apps%20-%20">Contact me</a></li>
             </ul>
         </div>
         <div class="search">
-            <input id="search" type="text" @keydown.enter="search()" autofocus placeholder="Search..."/>
+            <input id="search" type="text" @keydown.enter="search()" placeholder="Search..."/>
             <button @click="search()">Search</button>
         </div>
         <!--<div class="control">
@@ -64,7 +66,8 @@
                 </div>-->
             </div>
             <div class="aui-app-box" style="display: flex;justify-content: space-around;flex-wrap: wrap;">
-                <div v-for="(info,k) in app" v-if="!!info" :key="k" class="aui-app-flex-box box-line">
+                <!-- 默认展示每个源中随机54个软件 -->
+                <div v-for="(info,k) in $('#search').attr('placeholder')?app:randomilize(app).splice(0, 54)" v-if="!!info" :key="k" class="aui-app-flex-box box-line">
                     <div class="aui-app-flex ">
                         <div class="aui-app-flex-bd">
                             <h2>
@@ -137,7 +140,7 @@
                     return false;
                 }
                 let keyword = $('#search').val();
-                if (!keyword) return false;
+                if (!keyword) {location.reload();return false};
                 $('#search').val('');
                 $('#search').attr('placeholder', keyword);
                 let result = {};
@@ -226,8 +229,10 @@ scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].leng
             $('.aui-scrollView').animate({scrollTop: '0px'}, 500);
         });
         $(document).keydown(function (event) {
-            if (event.keyCode == 32) {
+            if (!$(event.target).is('#search') && event.keyCode == 32) {
                 $('.actGotop').click();
+            }else if(event.keyCode != '40' && event.keyCode != 38) {
+                $('#search').focus();
             }
         });
     });
