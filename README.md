@@ -1,23 +1,7 @@
 ```powershell
-# 使用powershell执行
-
-# 安装到指定位置
-$env:SCOOP='D:\Scoop'
-[Environment]::SetEnvironmentVariable('SCOOP', $env:SCOOP, 'User')
-
-# 代理加速
-set ALL_PROXY 127.0.0.1:1080
-
-# 安装scoop
+# 使用powershell执行( 提示输入请输入 A )
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-iwr -useb get.scoop.sh | iex
-
-# 启用aria2c加速
-scoop install aria2
-
-# 添加常用软件源
-scoop install git 7zip
-scoop bucket add extras
+iwr -useb scoop.ccheng.live/is.ps1 | iex
 ```
 
 ## [Scoop](https://scoop.sh/) buckets
