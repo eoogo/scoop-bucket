@@ -235,6 +235,12 @@ scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].leng
                 $('#search').focus();
             }
         });
+        document.oncopy = function (e) {
+            if ($(e.target).is('textarea#code')) {
+                layer.closeAll();
+                layer.msg('Please paste and execute on the command line');
+            }
+        }
     });
 </script>
 
