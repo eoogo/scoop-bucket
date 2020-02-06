@@ -140,7 +140,10 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: 'Ok', sha
                     return false;
                 }
                 let keyword = $('#search').val();
-                if (!keyword) {location.reload();return false};
+                if (!keyword) {location.reload();return false}
+                else {
+                    keyword = keyword.trim();
+                }
                 $('#search').val('');
                 $('#search').attr('placeholder', keyword);
                 let result = {};
@@ -148,12 +151,16 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: 'Ok', sha
                     Vue.delete(this.apps, name);
                 }
                 for (source of Object.keys(window.app_list)) {
-                    window.app_list[source].forEach(function (v, k) {
-                        if (v[0].indexOf(keyword) != -1) {
-                            if (!result[source]) result[source] = [];
-                            result[source][k] = window.app_list[source][k];
-                        }
-                    });
+                    if (keyword == source.substr(0, source.indexOf('/'))) { // 搜索指定作者
+                        result[source] = window.app_list[source];
+                    }else {
+                        window.app_list[source].forEach(function (v, k) {
+                            if (v[0].match(/\[.*?\]/)[0].indexOf(keyword) > -1) {
+                                if (!result[source]) result[source] = [];
+                                result[source][k] = window.app_list[source][k];
+                            }
+                        });
+                    }
                 }
                 // console.log(result);
                 this.apps = result;
