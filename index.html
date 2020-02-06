@@ -67,7 +67,7 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: 'Ok', sha
             </div>
             <div class="aui-app-box" style="display: flex;justify-content: space-around;flex-wrap: wrap;">
                 <!-- 默认展示每个源中随机54个软件 -->
-                <div v-for="(info,k) in $('#search').attr('placeholder')?app:randomilize(app).splice(0, 54)" v-if="!!info" :key="k" class="aui-app-flex-box box-line">
+                <div v-for="(info,k) in $('#search').attr('placeholder') != 'Search...'?app:randomilize(app).splice(0, 52)" v-if="!!info" :key="k" class="aui-app-flex-box box-line">
                     <div class="aui-app-flex ">
                         <div class="aui-app-flex-bd">
                             <h2>
