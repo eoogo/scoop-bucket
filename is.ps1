@@ -37,3 +37,4 @@ If ($is_add_extra -eq 'y') {
     scoop install git 7zip
     scoop bucket add extras
 }
+pause

@@ -37,14 +37,14 @@
         <div class="aui-center" style="margin-left: 3rem;">
             <span class="aui-center-title" style="cursor:pointer;" onclick="location.reload();">Eoogo</span>
             <ul class="aui-title-coll">
-                <li><a href="javascript:;" onclick="layer.alert(`# Execute using powershell (enter [A] for prompt)<br>
+                <li><a href="javascript:;" onclick="layer.alert(`# Copy the following code into your terminal<br><br>
+# Execute using powershell (enter [A] for prompt)<br>
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser<br>
-iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: 'Ok', shadeClose: true, closeBtn: false});">Install scoop</a></li>
-                <li style="cursor: pointer;" onclick="localStorage.clear();layer.msg('Clean up！(●\'◡\'●)', {}, () => location.reload());">Clear cache</li>
-                <li style="cursor: default">&emsp;</li>
+iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: ['Install via script', 'Cancel'], shadeClose: true, closeBtn: false}, () => {location = 'is.ps1';layer.msg('Right click after the download is complete');});">Install scoop</a></li>
+                <li style="cursor: pointer;" onclick="localStorage.clear();layer.msg('Clean up completed, waiting for reload...', {}, () => location.reload());">Clear cache</li>
+                <li><a href="mailto:1434389213@qq.com?subject=From%20scoop%20apps%20-%20">Send feedback</a></li>
                 <li><a href="https://scoop-docs.now.sh" target="_blank">Official support</a></li>
-                <li><a href="https://github.com/eoogo/scoop-bucket" target="_blank">About project</a></li>
-                <li><a href="mailto:1434389213@qq.com?subject=From%20scoop%20apps%20-%20">Contact me</a></li>
+                <li><a href="https://github.com/eoogo/scoop-bucket" target="_blank">About the project</a></li>
             </ul>
         </div>
         <div class="search">
