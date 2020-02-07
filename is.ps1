@@ -1,17 +1,23 @@
 # powershell安装scoop
 scoop
 If ($?) {
+    Write-Host "You have successfully installed scoop"
+    pause
     return
 }
-
+Write-Host "----------"
+Write-Host "----------"
+Write-Host "----------"
 $install_dir = Read-Host "Which drive letter do you want to install?"
 If ([String]::IsNullOrEmpty($install_dir)) {
     Write-Host "The string is null or empty."
+    pause
     return
 }
 $install_dir += ':'
 If (![io.Directory]::Exists($install_dir)) {
     Write-Host "Without this drive"
+    pause
     return
 }
 
