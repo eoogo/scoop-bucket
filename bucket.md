@@ -8,3 +8,4 @@
 | [keymanager](https://keymanager.org) | v3.9.28 | 提供安全便捷的SSL证书申请和管理 |  |
 | [phpenv](https://www.phpenv.cn) | v7.1.3 | 专业优雅而强大的PHP集成环境 |  |
 | [xshell](https://www.netsarang.com) | v6.x | 业界最强大的SSH客户机 |  |
+| [mouseInc](https://shuax.com/project/mouseinc/) | v2.9.10 | 小巧好用的鼠标手势 |  |
