@@ -172,10 +172,9 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: ['Install
 
             },
             install(name, source) {
-                layer.alert(`<textarea id="code" style="width: 100%;height: 90%;resize: none;border: none;overflow: hidden;overflow-y: auto; cursor: default;" readonly>scoop bucket add ${source.replace('/', '_')} https://github.com/${source}
-
-scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].length - 2)}
-</textarea>`, {
+                let official = ['ScoopInstaller/Main','lukesampson/scoop-extras'];
+                let add_source_code = official.indexOf(source) == -1?`scoop bucket add ${source.replace('/', '_')} https://github.com/${source}\n\n`:'';
+                layer.alert(`<textarea id="code" style="width: 100%;height: 90%;resize: none;border: none;overflow: hidden;overflow-y: auto; cursor: default;" readonly>${add_source_code}scoop install ${name.match(/\[.*?\]/)[0].substr(1, name.match(/\[.*?\]/)[0].length - 2)}\n</textarea>`, {
                     title: false,
                     closeBtn: false,
                     btn: ['Copy', 'Cancel'],
