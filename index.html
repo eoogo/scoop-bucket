@@ -152,7 +152,7 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: ['Install
                 }
                 $('#search').val('');
                 $('#search').attr('placeholder', keyword);
-                history.replaceState(null, null, '?keyword=' + encodeURIComponent(keyword))
+                history.replaceState(null, null, '?s=' + encodeURIComponent(keyword))
                 let result = {};
                 for (name of Object.keys(this.apps)) {
                     Vue.delete(this.apps, name);
@@ -204,7 +204,7 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: ['Install
                 window.app_list = JSON.parse(JSON.stringify(res));
                 // 如果uri是存在搜索关键字的，直接展示搜索结果
                 try {
-                    if (keyword = location.search.match(/keyword\=(.*?)?$/)[0]) {
+                    if (keyword = location.search.match(/s\=(.*?)?$/)[0]) {
                         keyword = keyword.substr(keyword.indexOf('=') + 1);
                         if (keyword.indexOf('&') != -1) keyword = keyword.substr(0, keyword.indexOf('&'));
                         this.search(keyword);
