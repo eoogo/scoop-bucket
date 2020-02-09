@@ -5,10 +5,9 @@ If ($?) {
     pause
     return
 }
-Write-Host "----------"
-Write-Host "----------"
-Write-Host "----------"
-$install_dir = Read-Host "Which drive letter do you want to install?"
+Write-Host "------------------------------"
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+$install_dir = Read-Host "Which drive letter do you want to install"
 If ([String]::IsNullOrEmpty($install_dir)) {
     Write-Host "The string is null or empty."
     pause
@@ -26,21 +25,15 @@ $env:SCOOP= $install_dir + '\Scoop'
 
 $is_shadow = Read-Host "Whether to enable acceleration(Proxy to local 1080 port) [y|n]"
 If ($is_shadow -eq 'y') {
-    set ALL_PROXY 127.0.0.1:1080
+    set ALL_PROXY "127.0.0.1:1080"
+    Write-Host "Please set your proxy to global mode!"
+    pause
 }
 
 iwr -useb get.scoop.sh | iex
 
 scoop install aria2
 
-$is_add_extra = Read-Host "Whether to add extension sources (default y) [y|n]"
-
-If ([String]::IsNullOrEmpty($is_add_extra)) {
-    $is_add_extra = 'y'
-}
-
-If ($is_add_extra -eq 'y') {
-    scoop install git 7zip
-    scoop bucket add extras
-}
+scoop install git 7zip
+scoop bucket add extras
 pause
