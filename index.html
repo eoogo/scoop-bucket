@@ -35,7 +35,7 @@
 <section id="container" class="aui-flexView">
     <header class="aui-navBar aui-navBar-fixed">
         <div class="aui-center" style="margin-left: 3rem;">
-            <span class="aui-center-title" style="cursor:pointer;" onclick="location.reload();">Eoogo</span>
+            <span class="aui-center-title" style="cursor:pointer;" onclick="location = '?'">Eoogo</span>
             <ul class="aui-title-coll">
                 <li><a href="javascript:;" onclick="layer.alert(`# Copy the following code into your terminal<br><br>
 # Execute using powershell (enter [A] for prompt)<br>
@@ -133,19 +133,26 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: ['Install
             apps: {}
         },
         methods: {
-            search() {
+            /*
+            * 搜索功能，可以直接在搜索框搜索，或者在页面进入时读取uri的keyword信息进行搜索
+            * */
+            search(k = null) {
                 if (!window.app_list) {
                     layer.msg('No data can be retrieved');
                     $('.aui-title-coll').css('transform', 'unset');
                     return false;
                 }
-                let keyword = $('#search').val();
-                if (!keyword) {location.reload();return false}
-                else {
+                let keyword = $('#search').val() || k;
+                if (!keyword || !$('#search').val() && $('#search').attr('placeholder') != 'Search...') {
+                    // 如果输入框的内容真的是为空的的时候进行搜索，则直接刷新页面
+                    location = '?';
+                    return false;
+                } else {
                     keyword = keyword.trim();
                 }
                 $('#search').val('');
                 $('#search').attr('placeholder', keyword);
+                history.replaceState(null, null, '?keyword=' + encodeURIComponent(keyword))
                 let result = {};
                 for (name of Object.keys(this.apps)) {
                     Vue.delete(this.apps, name);
@@ -195,6 +202,15 @@ iwr -useb scoop.ccheng.live/is.ps1 | iex<br><br>`, {title: false, btn: ['Install
         created() {
             getAppList().then(res => {
                 window.app_list = JSON.parse(JSON.stringify(res));
+                // 如果uri是存在搜索关键字的，直接展示搜索结果
+                try {
+                    if (keyword = location.search.match(/keyword\=(.*?)?$/)[0]) {
+                        keyword = keyword.substr(keyword.indexOf('=') + 1);
+                        if (keyword.indexOf('&') != -1) keyword = keyword.substr(0, keyword.indexOf('&'));
+                        this.search(keyword);
+                        return ;
+                    }
+                }catch(e){}
                 let resources = Object.keys(res);
                 let page = resources.splice(Math.floor(Math.random() * resources.length - 1), 2);
 
