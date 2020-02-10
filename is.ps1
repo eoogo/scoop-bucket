@@ -6,7 +6,7 @@ If ($?) {
     return
 }
 Write-Host "------------------------------"
-Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+
 $install_dir = Read-Host "Which drive letter do you want to install"
 If ([String]::IsNullOrEmpty($install_dir)) {
     Write-Host "The string is null or empty."
