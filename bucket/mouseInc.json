@@ -3,7 +3,7 @@
     "description": "Small and easy mouse gestures",
     "version": "2.9.10",
     "url": "https://github.com/eoogo/scoop-bucket/releases/download/2.9.10/mouseInc.zip",
-    "hash": "b0858cef33df1cfe359451adb49dd6bcbd4fed777be25e586815e07a4bb1187c",
+    "hash": "11062c9786d16eca5ebc05b30f0f3ea1f86fc8ef99a0edac4377013581f46f70",
     "post_install": [
         "if (!(Test-Path \"$dir\\data\\auto.cnf\")) {",
         "    echo Starting...",
