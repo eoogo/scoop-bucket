@@ -9,5 +9,11 @@
         "    echo Starting...",
         "    Start-Process -FilePath \"$dir\\MouseInc.exe\"",
         "}"
+    ],
+    "shortcuts": [
+        [
+            "MouseInc.exe",
+            "MouseInc"
+        ]
     ]
 }
