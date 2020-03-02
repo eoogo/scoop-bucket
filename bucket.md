@@ -10,4 +10,4 @@
 | [xshell](https://www.netsarang.com) | v6.x | 业界最强大的SSH客户机 |  |
 | [mouseInc](https://shuax.com/project/mouseinc/) | v2.9.10 | 小巧好用的鼠标手势 |  |
 | [php-cgi-spawner](https://github.com/deemru/php-cgi-spawner) | 1.1.23 | PHP进程管理器 | MIT |
-| [idea_msys2](https://github.com/eoogo/scoop-bucket) | 1.0.0 | 在idea中更方便地使用msys2作为终端 | MIT |
+| [idea_msys2](https://github.com/eoogo/scoop-bucket) | 1.0.0 | 在idea中更方便地使用msys2作为终端，默认已合并windows下环境变量。如果在其他地方也需要需要自行添加环境变量 “MSYS2_PATH_TYPE=inherit” | MIT |
