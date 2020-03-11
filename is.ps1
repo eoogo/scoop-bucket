@@ -32,6 +32,10 @@ If ($is_shadow -eq 'y') {
 
 iwr -useb get.scoop.sh | iex
 
+If ($is_shadow -eq 'y') {
+    scoop config proxy 127.0.0.1:1080
+}
+
 scoop install aria2
 
 scoop install git 7zip
