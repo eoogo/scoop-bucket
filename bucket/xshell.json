@@ -5,5 +5,6 @@
     "url": "https://github.com/eoogo/scoop-bucket/releases/download/6/Xshell.exe",
     "installer": {
         "file": "Xshell.exe"
+
     }
 }
