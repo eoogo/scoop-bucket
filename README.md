@@ -2,6 +2,7 @@
 
 
 ## [Scoop](https://scoop.sh/) buckets
+
 View the Scoop Directory by:  
 [GitHub score](https://github.com/rasa/scoop-directory/blob/master/by-score.md)
 | [bucket name](https://github.com/rasa/scoop-directory/blob/master/by-bucket.md)
