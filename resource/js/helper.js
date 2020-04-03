@@ -29,19 +29,36 @@ async function getAppList(resource = null) {
         let catalog = {};
         let app_index = 0;
         res.forEach(function (v) {
-            if (v.substr(0, 3) == '###') {
-                catalog = v.match(/\[.*?\]/)[0] || null;
-                catalog = catalog.substr(1, catalog.length - 2);
-                app_list[catalog] = [];
-                app_index = 0;
-            } else {
-                if (typeof app_list[catalog] == 'object' && v.substr(0, 3) == '| [') {
-                    app = v.split(/\s?\|\s?/);
-                    app.shift();
-                    app.pop();
-                    app_list[catalog][app_index++] = app;
+            try {
+                switch(v) {
+                    case '### [Apps](https://github.com/nophDog/random)':
+                        v = '### [nophDog/random](https://github.com/nophDog/random) nophDog apps';
+                        break;
+                     case '### Removed':
+                        v = '';
+                        break;
                 }
+
+                if (v.substr(0, 3) == '###') {
+                    catalog = v.match(/\[.*?\]/)[0] || null;
+                    catalog = catalog.substr(1, catalog.length - 2);
+                    app_list[catalog] = [];
+                    app_index = 0;
+                } else {
+                    if (typeof app_list[catalog] == 'object' && v.substr(0, 3) == '| [') {
+                        app = v.split(/\s?\|\s?/);
+                        app.shift();
+                        app.pop();
+                        app_list[catalog][app_index++] = app;
+                    }
+                }
+            }catch(e){
+                console.group('解析失败');
+                console.error('错误位置:' + v);
+                console.error('错误详情:' , e);
+                console.groupEnd();
             }
+            
         });
         localStorage.setItem('app_list', JSON.stringify(app_list));
         return app_list;
