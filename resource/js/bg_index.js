@@ -1,177 +1,170 @@
-var w = c.width = window.innerWidth,
-    h = c.height = window.innerHeight,
-    ctx = c.getContext('2d'),
-    opts = {
-        lineCount: 100,
-        starCount: 30,
-        radVel: .01,
-        lineBaseVel: .1,
-        lineAddedVel: .1,
-        lineBaseLife: .4,
-        lineAddedLife: .01,
-        starBaseLife: 10,
-        starAddedLife: 10,
-        ellipseTilt: -.3,
-        ellipseBaseRadius: .15,
-        ellipseAddedRadius: .02,
-        ellipseAxisMultiplierX: 2,
-        ellipseAxisMultiplierY: 1,
-        ellipseCX: w / 2,
-        ellipseCY: h / 2,
-        repaintAlpha: .015
-    },
-    gui = new dat.GUI,
-    lines = [],
-    stars = [],
-    tick = 0,
-    first = true;
+var c = document.getElementById("canvas");
+var ctx = c.getContext("2d");
 
-function init() {
-    lines.length = stars.length = 0;
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = '#333';
-    ctx.fillRect(0, 0, w, h);
-    if (first) {
-        var f = gui.addFolder('logics');
-        f.add(opts, 'lineCount', 1, 300);
-        f.add(opts, 'starCount', 1, 300);
-        f.add(opts, 'radVel', 0, 1);
-        f.add(opts, 'lineBaseVel', .01, 1);
-        f.add(opts, 'lineAddedVel', 0, 1);
-        f.add(opts, 'lineBaseLife', 0, 1);
-        f.add(opts, 'lineAddedLife', 0, 1);
-        f.add(opts, 'starBaseLife', 0, 100);
-        f.add(opts, 'starAddedLife', 0, 100);
-        f = gui.addFolder('graphics');
-        f.add(opts, 'ellipseTilt', -Math.PI, Math.PI).step(.1);
-        f.add(opts, 'ellipseBaseRadius', 0, .5);
-        f.add(opts, 'ellipseAddedRadius', 0, .5);
-        f.add(opts, 'ellipseAxisMultiplierX', 0, 3);
-        f.add(opts, 'ellipseAxisMultiplierY', 0, 3);
-        f.add(opts, 'ellipseCX', 0, w);
-        f.add(opts, 'ellipseCY', 0, h);
-        f.add(opts, 'repaintAlpha', 0, 1);
-        gui.add(window, 'init').name('reset animation');
-        gui.add(window, 'LuukLamers');
-        loop();
-        first = false;
+function resize() {
+    var box = c.getBoundingClientRect();
+    c.width = box.width;
+    c.height = box.height;
+}
+
+var light = {
+    x: 160,
+    y: 200
+}
+
+var colors = ["#f5c156", "#e6616b", "#5cd3ad"];
+
+function drawLight() {
+    ctx.beginPath();
+    ctx.arc(light.x, light.y, 1000, 0, 2 * Math.PI);
+    var gradient = ctx.createRadialGradient(light.x, light.y, 0, light.x, light.y, 1000);
+    gradient.addColorStop(0, "#3b4654");
+    gradient.addColorStop(1, "#2c343f");
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(light.x, light.y, 20, 0, 2 * Math.PI);
+    gradient = ctx.createRadialGradient(light.x, light.y, 0, light.x, light.y, 5);
+    gradient.addColorStop(0, "#fff");
+    gradient.addColorStop(1, "#3b4654");
+    ctx.fillStyle = gradient;
+    ctx.fill();
+}
+
+function Box() {
+    this.half_size = Math.floor((Math.random() * 50) + 1);
+    this.x = Math.floor((Math.random() * c.width) + 1);
+    this.y = Math.floor((Math.random() * c.height) + 1);
+    this.r = Math.random() * Math.PI;
+    this.shadow_length = 2000;
+    this.color = colors[Math.floor((Math.random() * colors.length))];
+  
+    this.getDots = function() {
+
+        var full = (Math.PI * 2) / 4;
+
+
+        var p1 = {
+            x: this.x + this.half_size * Math.sin(this.r),
+            y: this.y + this.half_size * Math.cos(this.r)
+        };
+        var p2 = {
+            x: this.x + this.half_size * Math.sin(this.r + full),
+            y: this.y + this.half_size * Math.cos(this.r + full)
+        };
+        var p3 = {
+            x: this.x + this.half_size * Math.sin(this.r + full * 2),
+            y: this.y + this.half_size * Math.cos(this.r + full * 2)
+        };
+        var p4 = {
+            x: this.x + this.half_size * Math.sin(this.r + full * 3),
+            y: this.y + this.half_size * Math.cos(this.r + full * 3)
+        };
+
+        return {
+            p1: p1,
+            p2: p2,
+            p3: p3,
+            p4: p4
+        };
+    }
+    this.rotate = function() {
+        var speed = (60 - this.half_size) / 20;
+        this.r += speed * 0.002;
+        this.x += speed;
+        this.y += speed;
+    }
+    this.draw = function() {
+        var dots = this.getDots();
+        ctx.beginPath();
+        ctx.moveTo(dots.p1.x, dots.p1.y);
+        ctx.lineTo(dots.p2.x, dots.p2.y);
+        ctx.lineTo(dots.p3.x, dots.p3.y);
+        ctx.lineTo(dots.p4.x, dots.p4.y);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+
+
+        if (this.y - this.half_size > c.height) {
+            this.y -= c.height + 100;
+        }
+        if (this.x - this.half_size > c.width) {
+            this.x -= c.width + 100;
+        }
+    }
+    this.drawShadow = function() {
+        var dots = this.getDots();
+        var angles = [];
+        var points = [];
+
+        for (dot in dots) {
+            var angle = Math.atan2(light.y - dots[dot].y, light.x - dots[dot].x);
+            var endX = dots[dot].x + this.shadow_length * Math.sin(-angle - Math.PI / 2);
+            var endY = dots[dot].y + this.shadow_length * Math.cos(-angle - Math.PI / 2);
+            angles.push(angle);
+            points.push({
+                endX: endX,
+                endY: endY,
+                startX: dots[dot].x,
+                startY: dots[dot].y
+            });
+        };
+
+        for (var i = points.length - 1; i >= 0; i--) {
+            var n = i == 3 ? 0 : i + 1;
+            ctx.beginPath();
+            ctx.moveTo(points[i].startX, points[i].startY);
+            ctx.lineTo(points[n].startX, points[n].startY);
+            ctx.lineTo(points[n].endX, points[n].endY);
+            ctx.lineTo(points[i].endX, points[i].endY);
+            ctx.fillStyle = "#2c343f";
+            ctx.fill();
+        };
     }
 }
 
-function loop() {
-    window.requestAnimationFrame(loop);
-    step();
-    draw();
-}
-
-function step() {
-    tick += .5;
-    if (lines.length < opts.lineCount && Math.random() < .5)
-        lines.push(new Line);
-    if (stars.length < opts.starCount)
-        stars.push(new Star);
-    lines.map(function (line) {
-        line.step();
-    });
-    stars.map(function (star) {
-        star.step();
-    });
-}
+var boxes = [];
 
 function draw() {
-    ctx.shadowBlur = 0;
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(0,0,0,alp)'.replace('alp', opts.repaintAlpha);
-    ctx.fillRect(0, 0, w, h);
-    ctx.globalCompositeOperation = 'lighter';
-    ctx.translate(opts.ellipseCX, opts.ellipseCY);
-    ctx.rotate(opts.ellipseTilt);
-    ctx.scale(opts.ellipseAxisMultiplierX, opts.ellipseAxisMultiplierY);
-    // ctx.shadowBlur here almost does nothing
-    lines.map(function (line) {
-        line.draw();
-    });
-    ctx.scale(1 / opts.ellipseAxisMultiplierX, 1 / opts.ellipseAxisMultiplierY);
-    ctx.rotate(-opts.ellipseTilt);
-    ctx.translate(-opts.ellipseCX, -opts.ellipseCY);
-    stars.map(function (star) {
-        star.draw();
-    });
+    ctx.clearRect(0, 0, c.width, c.height);
+    drawLight();
+
+    for (var i = 0; i < boxes.length; i++) {
+        boxes[i].rotate();
+        boxes[i].drawShadow();
+    };
+    for (var i = 0; i < boxes.length; i++) {
+        collisionDetection(i)
+        boxes[i].draw();
+    };
+    requestAnimationFrame(draw);
 }
 
-function Line() {
-    this.reset();
+resize();
+draw();
+
+while (boxes.length < 14) {
+    boxes.push(new Box());
 }
 
-Line.prototype.reset = function () {
-    this.rad = Math.random() * Math.PI * 2,
-        this.len = w * (opts.ellipseBaseRadius + Math.random() * opts.ellipseAddedRadius);
-    this.lenVel = opts.lineBaseVel + Math.random() * opts.lineAddedVel;
-    this.x = this.px = Math.cos(this.rad) * this.len;
-    this.y = this.py = Math.sin(this.rad) * this.len;
-    this.life = this.originalLife = w * (opts.lineBaseLife + Math.random() * opts.lineAddedLife);
-    this.alpha = .2 + Math.random() * .8;
-}
-Line.prototype.step = function () {
-    --this.life;
-    var ratio = 1 - .1 * this.life / this.originalLife;
-    this.px = this.x;
-    this.py = this.y;
-    this.rad += opts.radVel;
-    this.len -= this.lenVel;
-    this.x = Math.cos(this.rad) * this.len;
-    this.y = Math.sin(this.rad) * this.len;
-    if (this.life <= 0)
-        this.reset();
-}
-Line.prototype.draw = function () {
-    var ratio = Math.abs(this.life / this.originalLife - 1 / 2);
-    ctx.lineWidth = ratio * 5;
-    ctx.strokeStyle = ctx.shadowColor = 'hsla(hue, 80%, light%, alp)'
-        .replace('hue', tick + this.x / (w * (opts.ellipseBaseRadius + opts.ellipseAddedRadius)) * 100)
-        .replace('light', 75 - ratio * 150)
-        .replace('alp', this.alpha);
-    ctx.beginPath();
-    ctx.moveTo(this.px, this.py);
-    ctx.lineTo(this.x, this.y);
-    ctx.stroke();
+window.onresize = resize;
+c.onmousemove = function(e) {
+    light.x = e.offsetX == undefined ? e.layerX : e.offsetX;
+    light.y = e.offsetY == undefined ? e.layerY : e.offsetY;
 }
 
-function Star() {
-    this.reset();
-};
-Star.prototype.reset = function () {
-    this.x = Math.random() * w;
-    this.y = Math.random() * h;
-    this.life = opts.starBaseLife + Math.random() * opts.starAddedLife;
-}
-Star.prototype.step = function () {
-    --this.life;
-    if (this.life <= 0)
-        this.reset();
-}
-Star.prototype.draw = function () {
-    ctx.fillStyle = ctx.shadowColor = 'hsla(hue, 80%, 50%, .2)'
-        .replace('hue', tick + this.x / w * 100);
-    ctx.shadowBlur = this.life;
-    ctx.fillRect(this.x, this.y, 1, 1);
-};
-window.addEventListener('resize', function () {
-    w = c.width = window.innerWidth;
-    h = c.height = window.innerHeight;
-    opts.ellipseCX = w / 2;
-    opts.ellipseCY = h / 2;
-    init();
-});
 
-function LuukLamers() {
-    var i = 0,
-        array = [300, 74, 0.04, 0.1, 0.1, .55, 10, 100, 10, -.15, .18, .01, 3, 1, w / 2, h / 2, 0.02];
-    for (var key in opts) {
-        opts[key] = array[i];
-        ++i;
-    }
-    init();
+function collisionDetection(b){
+	for (var i = boxes.length - 1; i >= 0; i--) {
+		if(i != b){	
+			var dx = (boxes[b].x + boxes[b].half_size) - (boxes[i].x + boxes[i].half_size);
+			var dy = (boxes[b].y + boxes[b].half_size) - (boxes[i].y + boxes[i].half_size);
+			var d = Math.sqrt(dx * dx + dy * dy);
+			if (d < boxes[b].half_size + boxes[i].half_size) {
+			    boxes[b].half_size = boxes[b].half_size > 1 ? boxes[b].half_size-=1 : 1;
+			    boxes[i].half_size = boxes[i].half_size > 1 ? boxes[i].half_size-=1 : 1;
+			}
+		}
+	}
 }
-
-init();

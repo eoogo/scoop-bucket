@@ -34,7 +34,7 @@
     </script>
 </head>
 <body>
-<canvas id="c"></canvas>
+<canvas id="canvas"></canvas>
 <div class="actGotop" style="cursor: pointer;" title="Click me or press the space bar to return to the top"><img src="http://www.jq22.com/demo/jquery-top20161222/img/huojian.svg" alt="Back to top"></div>
 
 <section id="container" class="aui-flexView">
@@ -42,13 +42,14 @@
         <div class="aui-center" style="margin-left: 3rem;">
             <span class="aui-center-title" style="cursor:pointer;" onclick="location = '?'">Eoogo</span>
             <ul class="aui-title-coll">
+                <li><a href="https://www.if-she.com">Home</a></li>
+                <li><a href="https://www.if-she.com/record/windows%E4%B8%8B%E4%BD%BF%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" target="_blank">About</a></li>
                 <li><a href="javascript:;" onclick="layer.alert(`# Copy the following code into your powershell, Please enter 'A' when prompted<br><br>
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser<br>
 iwr -useb scoop.if-she.com/is.ps1 | iex<br><br>`, {title: false, btn: ['Install via script', 'Ok'], shadeClose: true, closeBtn: false}, () => {location = 'is.ps1';layer.msg('Right click after the download is complete');});">Install scoop</a></li>
                 <li style="cursor: pointer;" onclick="localStorage.clear();layer.msg('Clean up completed, waiting for reload...', {}, () => location.reload());">Clear cache</li>
-                <li><a href="https://www.if-she.com/privacy-policy">Send feedback</a></li>
+                <li><a href="mailto:1434389213@qq.com">Send feedback</a></li>
                 <li><a href="https://scoop-docs.now.sh" target="_blank">Official support</a></li>
-                <li><a href="https://www.if-she.com/archives/242" target="_blank">About the project</a></li>
             </ul>
         </div>
         <div class="search">
@@ -267,28 +268,7 @@ iwr -useb scoop.if-she.com/is.ps1 | iex<br><br>`, {title: false, btn: ['Install 
 </script>
 
 <!-- 背景开始 -->
-<script src="resource/js/dat.gui.min.js"></script>
+<!-- <script src="resource/js/dat.gui.min.js"></script> -->
 <script src="resource/js/bg_index.js"></script>
 <!-- 背景结束 -->
-
-<!-- 翻译开始 -->
-<div id='google_translate_element' style='position: fixed; bottom: 0px; right: 0px;z-index: 100'></div>
-<script>
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-            {
-                // pageLanguage: 'zh-CN',
-                // 需要翻译的语言，比如你只需要翻译成越南和英语，这里就只写en,vi
-                includedLanguages: 'en,zh-CN,hr,cs,da,nl,fr,de,el,iw,hu,ga,it,ja,ko,pt,ro,ru,sr,es,th,vi',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                // 自动显示翻译横幅，就是翻译后顶部出现的那个
-                autoDisplay: true,
-                // 还有些其他参数，由于原插件不再维护，找不到详细api了，将就了，实在不行直接上dom操作
-            },
-            'google_translate_element' // 存放翻译组件元素的id
-        );
-    }
-</script>
-<script src="https://translate.google.cn/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<!-- 翻译结束 -->
 </html>
